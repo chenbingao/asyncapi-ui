@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  asyncapi-ui:
+    image: ${IMAGE_NAME:-asyncapi-ui:latest}
+    container_name: asyncapi-ui
+    ports:
+      - "10000:8080"
+    volumes:
+      - /absolute/path/to/your/asyncapi-docs:/usr/share/nginx/html/docs:ro
+    environment:
+      - URLS_PRIMARY_NAME=Service A
+      - URLS=[{"url":"/docs/service-a.yaml","name":"Service A"},{"url":"/docs/service-b.yaml","name":"Service B"},{"url":"/docs/service-c.yaml","name":"Service C"}]
+    restart: unless-stopped

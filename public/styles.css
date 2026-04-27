@@ -1,0 +1,226 @@
+:root {
+  color-scheme: light;
+  --page-bg: #f5f7fb;
+  --panel-bg: #111827;
+  --panel-fg: #f8fafc;
+  --panel-muted: #a8b3c7;
+  --accent: #67e8f9;
+  --line: rgba(148, 163, 184, 0.18);
+  --card-bg: #ffffff;
+  --card-border: rgba(15, 23, 42, 0.08);
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --shadow: 0 22px 50px rgba(15, 23, 42, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(103, 232, 249, 0.12), transparent 22%),
+    linear-gradient(180deg, #eef4ff 0%, var(--page-bg) 240px);
+  color: var(--text-main);
+  font-family: "SF Pro Display", "PingFang SC", "Segoe UI", sans-serif;
+}
+
+body {
+  min-width: 320px;
+}
+
+.page-shell {
+  min-height: 100vh;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 32px;
+  background:
+    linear-gradient(135deg, rgba(17, 24, 39, 0.96), rgba(15, 23, 42, 0.98)),
+    var(--panel-bg);
+  color: var(--panel-fg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 14px 40px rgba(15, 23, 42, 0.22);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.brand__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 108px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #22d3ee, #34d399);
+  color: #082f49;
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.1vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.brand p {
+  margin: 6px 0 0;
+  color: var(--panel-muted);
+  font-size: 0.96rem;
+}
+
+.selector-panel {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: min(42rem, 52vw);
+}
+
+.selector-panel__label {
+  color: #f8fafc;
+  font-size: clamp(1rem, 1.5vw, 1.16rem);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.selector-panel__select {
+  width: 100%;
+  min-width: 220px;
+  padding: 14px 18px;
+  border: 2px solid rgba(103, 232, 249, 0.58);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.98);
+  color: #0f172a;
+  font: inherit;
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.selector-panel__select:focus {
+  outline: 3px solid rgba(103, 232, 249, 0.22);
+  outline-offset: 1px;
+}
+
+.content {
+  padding: 24px 32px 48px;
+}
+
+.status-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 24px;
+  margin: 0 auto 20px;
+  max-width: 1440px;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+
+.status-card__eyebrow {
+  margin: 0 0 10px;
+  color: #0891b2;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.status-card h2 {
+  margin: 0;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.status-card__description {
+  margin: 10px 0 0;
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.status-card__file {
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #e2e8f0;
+  color: #0f172a;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+.feedback {
+  max-width: 1440px;
+  margin: 0 auto 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: var(--shadow);
+  color: var(--text-muted);
+}
+
+.feedback[data-state="error"] {
+  color: #991b1b;
+  background: #fef2f2;
+  border-color: rgba(248, 113, 113, 0.35);
+}
+
+.asyncapi-stage {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 18px;
+  border-radius: 24px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow);
+}
+
+.asyncapi-render-root {
+  min-height: 320px;
+}
+
+@media (max-width: 960px) {
+  .topbar,
+  .selector-panel,
+  .status-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .selector-panel {
+    min-width: 0;
+  }
+
+  .status-card__file {
+    white-space: normal;
+    word-break: break-all;
+  }
+
+  .content {
+    padding: 20px 16px 36px;
+  }
+
+  .topbar {
+    padding: 20px 16px;
+  }
+}

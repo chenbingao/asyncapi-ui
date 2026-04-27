@@ -1,0 +1,99 @@
+asyncapi: 3.0.0
+info:
+  title: Order Service API
+  version: 1.0.0
+  description: 订单服务对外发布的领域事件文档。
+defaultContentType: application/json
+servers:
+  production:
+    host: broker.internal.example.com:9092
+    protocol: kafka
+    description: 生产 Kafka 集群
+channels:
+  order.created:
+    address: order.created
+    title: 订单已创建
+    description: 用户创建订单后发布该事件。
+    messages:
+      orderCreated:
+        $ref: '#/components/messages/OrderCreated'
+  payment.confirmed:
+    address: payment.confirmed
+    title: 支付已确认
+    description: 支付系统确认收款后发布该事件。
+    messages:
+      paymentConfirmed:
+        $ref: '#/components/messages/PaymentConfirmed'
+operations:
+  publishOrderCreated:
+    action: send
+    title: 发布订单创建事件
+    channel:
+      $ref: '#/channels/order.created'
+    messages:
+      - $ref: '#/channels/order.created/messages/orderCreated'
+  publishPaymentConfirmed:
+    action: send
+    title: 发布支付确认事件
+    channel:
+      $ref: '#/channels/payment.confirmed'
+    messages:
+      - $ref: '#/channels/payment.confirmed/messages/paymentConfirmed'
+components:
+  messages:
+    OrderCreated:
+      name: OrderCreated
+      title: OrderCreated
+      summary: 订单创建事件
+      payload:
+        type: object
+        properties:
+          orderId:
+            type: string
+            description: 订单唯一标识
+          userId:
+            type: string
+            description: 用户唯一标识
+          amount:
+            type: number
+            format: double
+            description: 订单金额
+          currency:
+            type: string
+            description: 币种
+          createdAt:
+            type: string
+            format: date-time
+            description: 创建时间
+        required:
+          - orderId
+          - userId
+          - amount
+          - currency
+          - createdAt
+    PaymentConfirmed:
+      name: PaymentConfirmed
+      title: PaymentConfirmed
+      summary: 支付确认事件
+      payload:
+        type: object
+        properties:
+          paymentId:
+            type: string
+            description: 支付单号
+          orderId:
+            type: string
+            description: 订单唯一标识
+          status:
+            type: string
+            enum:
+              - confirmed
+          confirmedAt:
+            type: string
+            format: date-time
+            description: 支付确认时间
+        required:
+          - paymentId
+          - orderId
+          - status
+          - confirmedAt

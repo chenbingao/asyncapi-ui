@@ -1,0 +1,105 @@
+asyncapi: 3.0.0
+info:
+  title: Inventory Service API
+  version: 1.0.0
+  description: 库存服务对外发布的领域事件文档。
+defaultContentType: application/json
+servers:
+  production:
+    host: broker.internal.example.com:5672
+    protocol: amqp
+    description: 生产 RabbitMQ 集群
+channels:
+  inventory.reserved:
+    address: inventory.reserved
+    title: 库存已锁定
+    description: 下单成功后，库存系统锁定库存并发布事件。
+    messages:
+      inventoryReserved:
+        $ref: '#/components/messages/InventoryReserved'
+  inventory.released:
+    address: inventory.released
+    title: 库存已释放
+    description: 订单取消或超时后释放库存并发布事件。
+    messages:
+      inventoryReleased:
+        $ref: '#/components/messages/InventoryReleased'
+operations:
+  publishInventoryReserved:
+    action: send
+    title: 发布库存锁定事件
+    channel:
+      $ref: '#/channels/inventory.reserved'
+    messages:
+      - $ref: '#/channels/inventory.reserved/messages/inventoryReserved'
+  publishInventoryReleased:
+    action: send
+    title: 发布库存释放事件
+    channel:
+      $ref: '#/channels/inventory.released'
+    messages:
+      - $ref: '#/channels/inventory.released/messages/inventoryReleased'
+components:
+  messages:
+    InventoryReserved:
+      name: InventoryReserved
+      title: InventoryReserved
+      summary: 库存锁定事件
+      payload:
+        type: object
+        properties:
+          sku:
+            type: string
+            description: 商品 SKU
+          warehouseId:
+            type: string
+            description: 仓库 ID
+          quantity:
+            type: integer
+            minimum: 1
+            description: 锁定数量
+          orderId:
+            type: string
+            description: 关联订单 ID
+          reservedAt:
+            type: string
+            format: date-time
+            description: 锁定时间
+        required:
+          - sku
+          - warehouseId
+          - quantity
+          - orderId
+          - reservedAt
+    InventoryReleased:
+      name: InventoryReleased
+      title: InventoryReleased
+      summary: 库存释放事件
+      payload:
+        type: object
+        properties:
+          sku:
+            type: string
+            description: 商品 SKU
+          warehouseId:
+            type: string
+            description: 仓库 ID
+          quantity:
+            type: integer
+            minimum: 1
+            description: 释放数量
+          reason:
+            type: string
+            enum:
+              - cancelled
+              - expired
+          releasedAt:
+            type: string
+            format: date-time
+            description: 释放时间
+        required:
+          - sku
+          - warehouseId
+          - quantity
+          - reason
+          - releasedAt

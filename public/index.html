@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AsyncAPI UI</title>
+    <link rel="stylesheet" href="/assets/asyncapi/default.min.css" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script defer src="/assets/asyncapi/standalone.js"></script>
+    <script defer src="/app.js"></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand__badge">AsyncAPI</span>
+          <div>
+            <h1 id="page-title">Project Docs</h1>
+            <p id="page-subtitle">Pure preview service</p>
+          </div>
+        </div>
+
+        <div class="selector-panel">
+          <label class="selector-panel__label" for="doc-selector">
+            Select a document
+          </label>
+          <select id="doc-selector" class="selector-panel__select"></select>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="status-card">
+          <div>
+            <p class="status-card__eyebrow">Current Document</p>
+            <h2 id="current-doc-name">Loading...</h2>
+            <p id="current-doc-description" class="status-card__description"></p>
+          </div>
+          <code id="current-doc-file" class="status-card__file"></code>
+        </section>
+
+        <section id="feedback" class="feedback" aria-live="polite"></section>
+        <section id="asyncapi-container" class="asyncapi-stage"></section>
+      </main>
+    </div>
+  </body>
+</html>

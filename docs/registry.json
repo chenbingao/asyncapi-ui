@@ -1,0 +1,18 @@
+{
+  "title": "AsyncAPI Project Docs",
+  "subtitle": "Pure preview service with a Swagger UI style document switcher",
+  "documents": [
+    {
+      "id": "order-service",
+      "label": "Order Service",
+      "file": "order-service.asyncapi.yaml",
+      "description": "订单域事件定义，演示下单与支付确认消息。"
+    },
+    {
+      "id": "inventory-service",
+      "label": "Inventory Service",
+      "file": "inventory-service.asyncapi.yaml",
+      "description": "库存域事件定义，演示库存锁定与释放消息。"
+    }
+  ]
+}
