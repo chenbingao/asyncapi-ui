@@ -57,11 +57,34 @@ function resolveInitialDocument() {
   return runtimeConfig.documents[0];
 }
 
+function buildRawDocumentUrl(documentItem) {
+  const sourceUrl = new URL(documentItem.url, window.location.origin);
+  if (sourceUrl.origin !== window.location.origin) {
+    return sourceUrl.toString();
+  }
+
+  if (!sourceUrl.pathname.startsWith("/docs/")) {
+    return sourceUrl.toString();
+  }
+
+  const rawUrl = new URL(sourceUrl.toString());
+  rawUrl.pathname = `/raw/${sourceUrl.pathname.slice("/docs/".length)}`;
+  rawUrl.search = "";
+  rawUrl.hash = "";
+  return rawUrl.toString();
+}
+
+function setRawDocumentMeta(documentItem) {
+  currentDocFileElement.href = buildRawDocumentUrl(documentItem);
+  currentDocFileElement.title = `Open raw document: ${currentDocFileElement.href}`;
+}
+
 function setCurrentDocMeta(documentItem) {
   currentDocNameElement.textContent = documentItem.label;
   currentDocDescriptionElement.textContent = documentItem.description || "";
   currentDocDescriptionElement.hidden = !documentItem.description;
   currentDocFileElement.textContent = documentItem.url;
+  setRawDocumentMeta(documentItem);
   document.title = `${documentItem.label} | ${runtimeConfig.title}`;
 }
 

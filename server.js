@@ -6,6 +6,7 @@ const HOST = process.env.HOST || "0.0.0.0";
 const PORT = Number(process.env.PORT || 8090);
 const ROOT_DIR = __dirname;
 const DIST_DIR = path.join(ROOT_DIR, "dist");
+const DOCS_DIR = path.join(DIST_DIR, "docs");
 
 const MIME_TYPES = {
   ".css": "text/css; charset=utf-8",
@@ -14,8 +15,8 @@ const MIME_TYPES = {
   ".json": "application/json; charset=utf-8",
   ".map": "application/json; charset=utf-8",
   ".svg": "image/svg+xml",
-  ".yaml": "application/yaml; charset=utf-8",
-  ".yml": "application/yaml; charset=utf-8"
+  ".yaml": "text/yaml; charset=utf-8",
+  ".yml": "text/yaml; charset=utf-8"
 };
 
 function getTargetFile(requestUrl) {
@@ -24,6 +25,19 @@ function getTargetFile(requestUrl) {
 
   if (pathname === "/healthz") {
     return { healthz: true };
+  }
+
+  if (pathname.startsWith("/raw/")) {
+    const filePath = path.normalize(path.join(DOCS_DIR, pathname.slice("/raw/".length)));
+    if (!filePath.startsWith(DOCS_DIR)) {
+      return null;
+    }
+
+    return {
+      filePath,
+      contentType: "text/plain; charset=utf-8",
+      cacheControl: "no-store"
+    };
   }
 
   const requestedPath = pathname === "/" ? "/index.html" : pathname;
@@ -63,8 +77,8 @@ async function readResponse(target) {
       status: 200,
       body: fileBuffer,
       headers: {
-        "Cache-Control": isConfigLike ? "no-store" : "public, max-age=300",
-        "Content-Type": MIME_TYPES[extension] || "application/octet-stream"
+        "Cache-Control": target.cacheControl || (isConfigLike ? "no-store" : "public, max-age=300"),
+        "Content-Type": target.contentType || MIME_TYPES[extension] || "application/octet-stream"
       }
     };
   } catch (error) {
